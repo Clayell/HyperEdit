@@ -86,7 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PrincipiaWrapper.cs" />
     <Compile Include="Source\*" />
     <Compile Include="Source\*\*" />
   </ItemGroup>
