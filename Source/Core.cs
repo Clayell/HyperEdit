@@ -266,7 +266,7 @@ namespace HyperEdit {
   public static class IoExt {
     private static readonly string RootDir = System.IO.Path.Combine(KSPUtil.ApplicationRootPath, "GameData/Kerbaltek/HyperEdit/PluginData/");
     
-    //static constructor executes when class is first accessed, before the method
+    //static constructor executes when class is first accessed, before any methods
     static IoExt() {
       if (!System.IO.Directory.Exists(RootDir)) {
         System.IO.Directory.CreateDirectory(RootDir);

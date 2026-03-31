@@ -285,6 +285,8 @@ namespace HyperEdit.Model
                 var evnt = new GameEvents.HostedFromToAction<Vessel, CelestialBody>(vessel, oldBody, newBody);
                 GameEvents.onVesselSOIChanged.Fire(evnt);
             }
+
+            FloatingOrigin.ResetTerrainShaderOffset();
         }
 
         public static void SetOrbit(this CelestialBody body, Orbit newOrbit)
