@@ -264,11 +264,7 @@ namespace HyperEdit {
   }
 
   public static class IoExt {
-    private static readonly string PluginDir = System.IO.Path.Combine(System.IO.Path.ChangeExtension(typeof(IoExt).Assembly.Location, null), "..");
-    private static readonly string PluginDataDir = System.IO.Path.Combine(PluginDir, "PluginData");
-
-    //private static readonly string RootDir = System.IO.Path.Combine(System.IO.Path.ChangeExtension(typeof(IoExt).Assembly.Location, null), "PluginData");
-    private static readonly string RootDir = PluginDataDir;
+    private static readonly string RootDir = System.IO.Path.Combine(KSPUtil.ApplicationRootPath, "GameData/Kerbaltek/HyperEdit/PluginData/");
 
     static IoExt() {
       if (!System.IO.Directory.Exists(RootDir)) {
@@ -278,7 +274,7 @@ namespace HyperEdit {
       Extensions.Log("Using '" + RootDir + "' as root config directory");
     }
 
-    public static string GetPath(string path) => path == null ? RootDir : System.IO.Path.Combine(RootDir, path);
+    public static string GetPath(string path) => string.IsNullOrEmpty(path) ? RootDir : System.IO.Path.Combine(RootDir, path);
 
     public static void Save(this ConfigNode config) => config.Save(GetPath(config.name + ".cfg"));
   }
