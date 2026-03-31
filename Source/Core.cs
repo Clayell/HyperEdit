@@ -265,13 +265,29 @@ namespace HyperEdit {
 
   public static class IoExt {
     private static readonly string RootDir = System.IO.Path.Combine(KSPUtil.ApplicationRootPath, "GameData/Kerbaltek/HyperEdit/PluginData/");
-
+    
+    //static constructor executes when class is first accessed, before the method
     static IoExt() {
       if (!System.IO.Directory.Exists(RootDir)) {
         System.IO.Directory.CreateDirectory(RootDir);
       }
 
       Extensions.Log("Using '" + RootDir + "' as root config directory");
+
+      string oldDir = System.IO.Path.Combine(KSPUtil.ApplicationRootPath, "GameData/Kerbaltek/HyperEdit/");
+      if (System.IO.Directory.Exists(oldDir))
+      {
+          foreach (string oldFilePath in System.IO.Directory.GetFiles(oldDir))
+          {
+              string fileName = System.IO.Path.GetFileName(oldFilePath);
+              string newFilePath = GetPath(fileName);
+  
+              if (System.IO.File.Exists(newFilePath))
+                  System.IO.File.Delete(oldFilePath);
+              else
+                  System.IO.File.Move(oldFilePath, newFilePath);
+          }
+      }
     }
 
     public static string GetPath(string path) => string.IsNullOrEmpty(path) ? RootDir : System.IO.Path.Combine(RootDir, path);
