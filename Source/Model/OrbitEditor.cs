@@ -6,6 +6,40 @@ namespace HyperEdit.Model
 {
     public static class OrbitEditor
     {
+        static bool PrincipiaInstalled;
+        static readonly Dictionary<CelestialBody, double> originalGeeForces = new Dictionary<CelestialBody, double>();
+
+        static OrbitEditor()
+        {
+            PrincipiaInstalled = PrincipiaWrapper.Init();
+        }
+
+        public static void PrincipiaHackGravity()
+        {
+            if (PrincipiaInstalled)
+            {
+                originalGeeForces.Clear();
+                for (int i = 0; i < FlightGlobals.Bodies.Count; i++)
+                {
+                    CelestialBody celestialBody = FlightGlobals.Bodies[i];
+                    originalGeeForces.Add(celestialBody, celestialBody.GeeASL);
+                }
+                FlightGlobals.currentMainBody.GeeASL = 0.01;
+            }
+        }
+
+        public static void PrincipiaUnhackGravity()
+        {
+            if (PrincipiaInstalled)
+            {
+                for (int j = 0; j < FlightGlobals.Bodies.Count; j++)
+                {
+                    CelestialBody celestialBody2 = FlightGlobals.Bodies[j];
+                    celestialBody2.GeeASL = originalGeeForces[celestialBody2];
+                }
+            }
+        }
+        
         public static IEnumerable<OrbitDriver> OrderedOrbits()
         {
             var query = (IEnumerable<OrbitDriver>)
@@ -305,6 +339,8 @@ namespace HyperEdit.Model
 
         private static void HardsetOrbit(OrbitDriver orbitDriver, Orbit newOrbit)
         {
+            PrincipiaHackGravity();
+            
             var orbit = orbitDriver.orbit;
             orbit.inclination = newOrbit.inclination;
             orbit.eccentricity = newOrbit.eccentricity;
@@ -320,6 +356,7 @@ namespace HyperEdit.Model
             {
                 orbitDriver.OnReferenceBodyChange?.Invoke(newOrbit.referenceBody);
             }
+            PrincipiaUnhackGravity();
             RateLimitedLogger.Log(HardsetOrbitLogObject,
                 $"Orbit \"{orbitDriver.OrbitDriverToString()}\" changed to: inc={orbit.inclination} ecc={orbit.eccentricity} sma={orbit.semiMajorAxis} lan={orbit.LAN} argpe={orbit.argumentOfPeriapsis} mep={orbit.meanAnomalyAtEpoch} epoch={orbit.epoch} refbody={orbit.referenceBody.CbToString()}");
         }
