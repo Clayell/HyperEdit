@@ -42,10 +42,10 @@ public class HyperEditModule : MonoBehaviour {
       if (Time.fixedTime - lasttimecheck > .1) {
         lasttimecheck = Time.fixedTime;
         // following fixes a stock bug
-        if (appListModHidden.Contains(HyperEdit.HyperEditBehaviour.appButton)) {
-          HyperEdit.HyperEditBehaviour.appButton.gameObject.SetActive(false);
-          if (HyperEdit.HyperEditBehaviour.appButton.enabled) {
-            HyperEdit.HyperEditBehaviour.appButton.onDisable();
+        if (appListModHidden.Contains(HyperEdit.HyperEditBehaviour.AppButton)) {
+          HyperEdit.HyperEditBehaviour.AppButton.gameObject.SetActive(false);
+          if (HyperEdit.HyperEditBehaviour.AppButton.enabled) {
+            HyperEdit.HyperEditBehaviour.AppButton.onDisable();
           }
         }
       }
@@ -77,7 +77,7 @@ namespace HyperEdit {
     private Action _createLanderView;
     private bool _autoOpenLanderValue;
 
-    public static ApplicationLauncherButton appButton {
+    public static ApplicationLauncherButton AppButton {
       get { return _appLauncherButton; }
     }
 
@@ -575,33 +575,5 @@ namespace HyperEdit {
         outAngle += 360.0;
       return outAngle;
     }
-
-
-  }
-
-  public static class Utils {
-    ///   Borrowed from https://github.com/KSP-KOS/KOS.
-    /// <summary>
-    ///   Fix the strange too-large or too-small angle degrees that are sometimes
-    ///   returned by KSP, normalizing them into a constrained 360 degree range.
-    /// </summary>
-    /// <param name="inAngle">input angle in degrees</param>
-    /// <param name="rangeStart">
-    ///   Bottom of 360 degree range to normalize to.
-    ///   ( 0 means the range [0..360]), while -180 means [-180,180] )
-    /// </param>
-    /// <returns>the same angle, normalized to the range given.</returns>
-    public static double DegreeFix(double inAngle, double rangeStart) {
-      double rangeEnd = rangeStart + 360.0;
-      double outAngle = inAngle;
-      while (outAngle > rangeEnd)
-        outAngle -= 360.0;
-      while (outAngle < rangeStart)
-        outAngle += 360.0;
-      return outAngle;
-    }
-
-
-
   }
 }

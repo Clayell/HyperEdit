@@ -173,7 +173,7 @@ namespace HyperEdit.Model {
     public static void LoadLast(Action<double, double, double, CelestialBody> onLoad) {
       var lastC = SavedCoords.Find(c => c.Name == RecentEntryName);
       //double-check coords are correct (so that we don't load invalid data!)
-      onLoad(Extensions.DegreeFix(lastC.Lat,0) , lastC.Lon, lastC.Alt, lastC.Body);
+      onLoad(Math.Sign(lastC.Lat) * Extensions.DegreeFix(Math.Abs(lastC.Lat), 0), lastC.Lon, lastC.Alt, lastC.Body);
     }
 
     public static void Load(Action<double, double, double, CelestialBody> onLoad) {
